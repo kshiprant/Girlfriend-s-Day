@@ -382,9 +382,11 @@
     <div class="pin-card glass">
       <h2>Enter PIN</h2>
       <p>To view your surprise</p>
-      <input type="password" id="pin-input" class="pin-input" maxlength="4" placeholder="••••">
+      <!-- ADDED inputmode="numeric" to trigger mobile number pads and prevent accidental spaces -->
+      <input type="password" inputmode="numeric" pattern="[0-9]*" id="pin-input" class="pin-input" maxlength="4" placeholder="••••">
       <div id="pin-error">Incorrect PIN, try again!</div>
-      <button class="cta-btn pin-btn" onclick="verifyPin()">Unlock</button>
+      <!-- Removed inline onclick block, handled in script tag now -->
+      <button id="unlock-btn" class="cta-btn pin-btn">Unlock</button>
     </div>
   </div>
 
@@ -546,9 +548,4 @@
       <h2>Songs that sound like you</h2>  
       <div class="playlist-card glass">  
         <button class="play-btn" aria-label="Play preview">▶</button>  
-        <div class="eq"><span></span><span></span><span></span><span></span></div>  
-        <div class="track-list">  
-          <h3>Our Story, Vol. 1</h3>  
-          
-          <!-- Replace YOUR_SONG_LINK_HERE with the actual Spotify/Apple/YouTube URL -->
-          <a href
+        <div class="eq"><span></span><span></span><span></span><span></sp
