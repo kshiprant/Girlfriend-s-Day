@@ -33,7 +33,6 @@
       linear-gradient(160deg, var(--pink-soft) 0%, var(--lavender) 55%, var(--white-glow) 100%);  
     background-attachment:fixed;  
     overflow-x:hidden;  
-    /* Keeps user from scrolling while on PIN screen */
     overflow-y: hidden;
     min-height:100vh;  
   }  
@@ -107,7 +106,7 @@
   #loading-screen {
     z-index: 9998;
     opacity: 0;
-    pointer-events: none; /* Allows clicks to pass through when hidden */
+    pointer-events: none;
   }
 
   .pin-card {
@@ -135,7 +134,7 @@
     border-radius: 14px;
     background: rgba(255, 255, 255, 0.6);
     color: var(--ink);
-    padding: 12px 10px 12px 22px; /* Extra left padding to offset letter-spacing */
+    padding: 12px 10px 12px 22px;
     outline: none;
     transition: border-color 0.3s;
     font-family: monospace;
@@ -382,10 +381,8 @@
     <div class="pin-card glass">
       <h2>Enter PIN</h2>
       <p>To view your surprise</p>
-      <!-- ADDED inputmode="numeric" to trigger mobile number pads and prevent accidental spaces -->
-      <input type="password" inputmode="numeric" pattern="[0-9]*" id="pin-input" class="pin-input" maxlength="4" placeholder="••••">
+      <input type="text" inputmode="numeric" pattern="[0-9]*" id="pin-input" class="pin-input" maxlength="4" placeholder="••••">
       <div id="pin-error">Incorrect PIN, try again!</div>
-      <!-- Removed inline onclick block, handled in script tag now -->
       <button id="unlock-btn" class="cta-btn pin-btn">Unlock</button>
     </div>
   </div>
@@ -510,7 +507,6 @@
       <div class="eyebrow">Favourite Moments</div>  
       <h2>A little gallery of us</h2>  
       <div class="gallery-grid">  
-        <!-- Note: A dark gradient overlay is added so the text remains readable over the images -->
         <div class="gallery-tile" style="background: linear-gradient(0deg, rgba(74,47,71,0.5), transparent 55%), url('65224.jpg') center/cover;">
           <span>Us ✨</span>
         </div>  
@@ -548,4 +544,131 @@
       <h2>Songs that sound like you</h2>  
       <div class="playlist-card glass">  
         <button class="play-btn" aria-label="Play preview">▶</button>  
-        <div class="eq"><span></span><span></span><span></span><span></sp
+        <div class="eq"><span></span><span></span><span></span><span></span></div>  
+        <div class="track-list">  
+          <h3>Our Story, Vol. 1</h3>  
+          <a href="YOUR_SONG_LINK_HERE" target="_blank" class="track">
+            <span>1. The First Time</span>
+            <span>3:12</span>
+          </a>  
+          <a href="YOUR_SONG_LINK_HERE" target="_blank" class="track">
+            <span>2. Late Night Drives</span>
+            <span>4:02</span>
+          </a>  
+          <a href="YOUR_SONG_LINK_HERE" target="_blank" class="track">
+            <span>3. Home</span>
+            <span>3:45</span>
+          </a>  
+          <a href="YOUR_SONG_LINK_HERE" target="_blank" class="track">
+            <span>4. Still Falling</span>
+            <span>3:28</span>
+          </a>  
+        </div>  
+      </div>  
+    </div>  
+  </section>  
+
+  <!-- CLOSING -->  
+  <section class="closing">  
+    <p class="closing-quote quote">Thank you for being my home. Happy Girlfriend's Day.</p>  
+    <div class="closing-heart">❤</div>  
+  </section>  
+  
+  <footer>Made with love, for you.</footer>  
+  
+  <script>  
+    // ---------- PIN & LOADING SCREEN LOGIC ----------
+    const pinInput = document.getElementById('pin-input');
+    const unlockBtn = document.getElementById('unlock-btn');
+    
+    // Changed type to text with numeric keypad to fix Android/iOS reading issues
+    unlockBtn.addEventListener('click', verifyPin);
+    
+    pinInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        verifyPin();
+      }
+    });
+
+    function verifyPin() {
+      // Force string conversion, clean spaces, and remove invisible character codes
+      const enteredPin = String(pinInput.value).replace(/[\s\uFEFF\xA0]+/g, '');
+      const errorText = document.getElementById('pin-error');
+      
+      // Strict check against "1904"
+      if (enteredPin === "1904") {
+        errorText.style.opacity = '0';
+        document.getElementById('pin-screen').style.opacity = '0';
+        
+        setTimeout(() => {
+          document.getElementById('pin-screen').style.display = 'none';
+          
+          const loader = document.getElementById('loading-screen');
+          loader.style.pointerEvents = 'auto';
+          loader.style.opacity = '1';
+          
+          setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+              loader.style.display = 'none';
+              document.body.style.overflowY = 'auto'; 
+            }, 600);
+          }, 4000);
+          
+        }, 600);
+
+      } else {
+        pinInput.classList.remove('error-shake');
+        void pinInput.offsetWidth;
+        pinInput.classList.add('error-shake');
+        errorText.style.opacity = '1';
+        pinInput.value = '';
+      }
+    }
+
+    // ---------- AMBIENT EFFECTS ----------
+    const ambient = document.getElementById('ambient');  
+    for(let i=0;i<16;i++){  
+      const p = document.createElement('div');  
+      p.className='petal';  
+      p.style.left = Math.random()*100+'vw';  
+      p.style.setProperty('--drift', (Math.random()*80-40)+'px');  
+      p.style.animationDuration = (10+Math.random()*10)+'s';  
+      p.style.animationDelay = (Math.random()*10)+'s';  
+      p.style.transform = `scale(${0.6+Math.random()*0.8})`;  
+      ambient.appendChild(p);  
+    }  
+    for(let i=0;i<28;i++){  
+      const s = document.createElement('div');  
+      s.className='star';  
+      s.style.left = Math.random()*100+'vw';  
+      s.style.top = Math.random()*100+'vh';  
+      s.style.animationDuration = (2+Math.random()*3)+'s';  
+      s.style.animationDelay = (Math.random()*4)+'s';  
+      ambient.appendChild(s);  
+    }  
+    
+    // ---------- LOVE COUNTER ----------
+    const startDate = new Date("2025-07-19T00:00:00");  
+    
+    function updateCounter(){  
+      const now = new Date();  
+      let diff = Math.max(0, now - startDate) / 1000;  
+      
+      if (diff < 0) diff = 0;
+
+      const days = Math.floor(diff/86400); diff -= days*86400;  
+      const hours = Math.floor(diff/3600); diff -= hours*3600;  
+      const mins = Math.floor(diff/60); diff -= mins*60;  
+      const secs = Math.floor(diff);  
+      
+      document.getElementById('c-days').textContent = days;  
+      document.getElementById('c-hours').textContent = String(hours).padStart(2,'0');  
+      document.getElementById('c-mins').textContent = String(mins).padStart(2,'0');  
+      document.getElementById('c-secs').textContent = String(secs).padStart(2,'0');  
+    }  
+    updateCounter();  
+    setInterval(updateCounter, 1000);  
+  </script>  
+</body>  
+</html>
