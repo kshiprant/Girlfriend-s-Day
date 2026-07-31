@@ -18,9 +18,9 @@
     --gold-glow:#f0c27e;  
     --ink:#4a2f47;  
     --ink-soft:#7a5c76;  
-    --glass-fill: rgba(255,255,255,0.4);  
-    --glass-fill-strong: rgba(255,255,255,0.6);  
-    --glass-border: rgba(255,255,255,0.65);  
+    --glass-fill: rgba(255,255,255,0.32);  
+    --glass-fill-strong: rgba(255,255,255,0.48);  
+    --glass-border: rgba(255,255,255,0.55);  
   }  
   *{box-sizing:border-box; margin:0; padding:0;}  
   html{scroll-behavior:smooth;}  
@@ -32,7 +32,8 @@
       radial-gradient(circle at 85% 80%, rgba(255,255,255,0.5), transparent 45%),  
       linear-gradient(160deg, var(--pink-soft) 0%, var(--lavender) 55%, var(--white-glow) 100%);  
     background-attachment:fixed;  
-    overflow:hidden; 
+    overflow-x:hidden;  
+    overflow-y: hidden;
     min-height:100vh;  
   }  
   @media (prefers-reduced-motion: reduce){  
@@ -71,51 +72,12 @@
     50%{ opacity:1; transform:scale(1.3);}
   }
 
-  /* ---------- Page System (Reel Multi-step Style) ---------- */
-  .page-container {
-    position: relative;
-    z-index: 2;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .page {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 6vw;
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.95) translateY(20px);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .page.active {
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1) translateY(0);
-  }
-
-  .page-inner {
-    max-width: 720px;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  section{position:relative; z-index:2; padding: 110px 8vw;}
+  .section-inner{max-width:1080px; margin:0 auto;}
 
   .eyebrow{
     font-size:0.72rem; text-transform:uppercase; letter-spacing:0.28em;
-    color:var(--rose-accent-deep); font-weight:600; margin-bottom:14px;
+    color:var(--rose-accent-deep); font-weight:600; margin-bottom:18px;
     display:flex; align-items:center; gap:10px;
   }
   .eyebrow::before{content:"❦"; font-size:0.9rem;}
@@ -185,6 +147,15 @@
     width: 100%;
     margin-top: 25px;
   }
+  .error-shake {
+    animation: shake 0.4s ease-in-out;
+    border-color: #ff4d4d !important;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
   #pin-error {
     color: #e03c3c;
     margin-top: 15px;
@@ -215,9 +186,15 @@
     50% { transform: translateY(-20px); }
   }
 
-  /* ---------- HERO (Page 1) ---------- */
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding: 60px 6vw 80px;
+  }
   .hero-heading{
-    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
     line-height:1.1;
     color:var(--ink);
     text-shadow: 0 2px 24px rgba(255,255,255,0.7);
@@ -228,16 +205,17 @@
   @keyframes pulse{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
 
   .hero-sub{
-    margin-top:14px;
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    margin-top:18px;
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem);
     color:var(--ink-soft);
+    max-width:520px;
   }
 
   .heart-frame-wrap{
     position:relative;
-    width: min(260px, 50vw);
+    width: min(320px, 62vw);
     aspect-ratio: 1/0.92;
-    margin: 32px auto 30px;
+    margin: 52px auto 46px;
   }
   .heart-frame{
     width:100%; height:100%;
@@ -258,10 +236,10 @@
 
   .cta-btn{
     position:relative;
-    padding: 15px 40px;
+    padding: 17px 44px;
     border-radius: 999px;
     border:1px solid var(--glass-border);
-    background: linear-gradient(120deg, rgba(255,255,255,0.65), rgba(255,255,255,0.3));
+    background: linear-gradient(120deg, rgba(255,255,255,0.55), rgba(255,255,255,0.2));
     backdrop-filter: blur(14px);
     color: var(--rose-accent-deep);
     font-weight:600; font-size:1rem; letter-spacing:0.03em;
@@ -272,179 +250,129 @@
   .cta-btn:hover{ transform: translateY(-3px); box-shadow: 0 16px 40px rgba(200,110,140,0.4); }
   .cta-btn:focus-visible{ outline:2px solid var(--rose-accent-deep); outline-offset:4px; }
 
-  /* ---------- REASONS (Page 2) ---------- */
-  .reasons-stack{
-    display:flex; flex-direction:column; gap:14px; margin-top:20px; width:100%; max-width:600px;
-    text-align:left;
+  /* ---------- REASONS ---------- */
+  .reasons-grid{
+    display:grid; gap:24px; margin-top:44px;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   }
-  .reason-row{
-    display:flex; align-items:flex-start; gap:16px; padding:16px 20px; border-radius:18px;
-    transition: transform 0.3s ease;
+  .reason-card{
+    border-radius:22px; padding:30px 26px;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
   }
-  .reason-row:hover{ transform: translateX(6px); }
-  .reason-mark{ font-size:1.3rem; color:var(--rose-accent); line-height:1; flex-shrink:0;}
-  .reason-row h3{ font-size:1rem; margin-bottom:3px; color:var(--ink); }
-  .reason-row p{ font-size:0.85rem; color:var(--ink-soft); line-height:1.4; }
+  .reason-card:hover{ transform: translateY(-6px); }
+  .reason-mark{ font-size:1.6rem; color:var(--rose-accent); margin-bottom:14px; display:block;}
+  .reason-card h3{ font-size:1.15rem; margin-bottom:8px; color:var(--ink); }
+  .reason-card p{ font-size:0.92rem; color:var(--ink-soft); line-height:1.6; }
 
-  /* ---------- LOVE JAR (Page 3) ---------- */
-  .jar-wrap{
-    position: relative;
-    width: 170px;
-    height: 210px;
-    margin: 15px auto;
-    background: rgba(255,255,255,0.25);
-    border: 3px solid rgba(255,255,255,0.7);
-    border-radius: 20px 20px 40px 40px;
-    box-shadow: inset 0 0 20px rgba(255,255,255,0.6), 0 10px 30px rgba(200,110,140,0.2);
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-end;
-    justify-content: center;
-    padding: 10px;
-    gap: 6px;
-    overflow: hidden;
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; margin-top:50px; padding-left:28px;}
+  .timeline::before{
+    content:""; position:absolute; left:6px; top:6px; bottom:6px; width:2px;
+    background:linear-gradient(var(--rose-accent), var(--lavender-deep));
+    opacity:0.5;
   }
-  .jar-wrap::before {
-    content: "";
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 14px;
-    background: rgba(255,255,255,0.5);
-    border: 2px solid rgba(255,255,255,0.8);
-    border-radius: 6px;
+  .tl-item{ position:relative; padding: 0 0 44px 30px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-dot{
+    position:absolute; left:-1px; top:4px;
+    width:14px; height:14px; border-radius:50%;
+    background: var(--rose-accent);
+    box-shadow: 0 0 0 5px rgba(224,102,140,0.18);
   }
-  .jar-heart {
-    font-size: 1.3rem;
-    animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-  }
-  @keyframes bounceIn {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
+  .tl-date{ font-size:0.75rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--rose-accent-deep); font-weight:600;}
+  .tl-card{ margin-top:10px; padding:22px 24px; border-radius:18px;}
+  .tl-card h3{ font-size:1.05rem; margin-bottom:6px;}
+  .tl-card p{ font-size:0.92rem; color:var(--ink-soft); line-height:1.55;}
 
-  /* ---------- MUSIC PAGE (Page 4) ---------- */
-  .music-card-center{
-    padding: 30px; border-radius: 28px; display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 420px; width: 100%;
-    margin-top: 15px;
+  /* ---------- GALLERY ---------- */
+  .gallery-grid{
+    display:grid; gap:20px; margin-top:44px;
+    grid-template-columns: repeat(auto-fit, minmax(190px,1fr));
   }
-  .vinyl-cover {
-    width: 130px; height: 130px; border-radius: 50%;
-    background: url('65223.jpg') center/cover no-repeat;
-    box-shadow: 0 10px 25px rgba(100,50,80,0.3);
-    border: 4px solid rgba(255,255,255,0.8);
-    position: relative;
-    animation: spin 10s linear infinite paused;
+  .gallery-tile{
+    aspect-ratio: 4/5;
+    border-radius:24px;
+    display:flex; align-items:flex-end;
+    padding:16px;
+    position:relative; overflow:hidden;
   }
-  .vinyl-cover.playing {
-    animation-play-state: running;
+  .gallery-tile::after{
+    content:"♡"; position:absolute; top:16px; right:18px; color:rgba(255,255,255,0.85); font-size:1.1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
   }
-  .vinyl-cover::after {
-    content: "";
-    position: absolute;
-    top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 28px; height: 28px; background: var(--white-glow);
-    border-radius: 50%; border: 2px solid var(--rose-accent);
-  }
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-
-  /* ---------- LETTER PAGE (Page 5) ---------- */
-  .letter-card {
-    padding: 30px 36px; border-radius: 24px; text-align: left; max-width: 520px; width: 100%;
-    margin-top: 15px;
-    box-shadow: 0 12px 40px rgba(180,100,130,0.15);
-  }
-  .letter-card p {
-    color: var(--ink-soft); line-height: 1.6; margin-bottom: 10px;
-    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem;
+  .gallery-tile span{ 
+    color:#fff; 
+    font-size:0.82rem; 
+    letter-spacing:0.04em; 
+    opacity:0.92;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
   }
 
-  /* ---------- POLAROID GALLERY (Page 6) ---------- */
-  .polaroid-frame {
-    background: #fff;
-    padding: 12px 12px 32px 12px;
-    border-radius: 4px;
-    box-shadow: 0 15px 35px rgba(100,50,70,0.2);
-    transform: rotate(-2deg);
-    transition: transform 0.3s ease;
-    max-width: 240px;
-    width: 100%;
-    margin: 15px auto;
+  /* ---------- COUNTER ---------- */
+  .counter-panel{
+    margin-top:44px; border-radius:28px; padding:48px 6vw;
+    display:flex; flex-wrap:wrap; gap:34px; justify-content:center; text-align:center;
   }
-  .polaroid-frame:hover { transform: rotate(0deg) scale(1.02); }
-  .polaroid-img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    background-size: cover;
-    background-position: center;
+  .counter-unit{ min-width:100px;}
+  .counter-num{
+    font-family:'Playfair Display', serif; font-size:clamp(2.1rem,5vw,3.2rem);
+    color:var(--rose-accent-deep);
   }
-  .polaroid-caption {
-    font-family: 'Playfair Display', serif;
-    color: var(--ink);
-    font-size: 0.95rem;
-    margin-top: 10px;
-    text-align: center;
-  }
+  .counter-label{ font-size:0.72rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-soft); margin-top:6px;}
 
-  /* ---------- KISS PAGE (Page 7) ---------- */
-  .kiss-target-area {
-    position: relative;
-    width: min(300px, 80vw);
-    height: 200px;
-    border-radius: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    overflow: hidden;
-    margin: 15px auto;
+  /* ---------- PLAYLIST ---------- */
+  .playlist-card{
+    margin-top:44px; border-radius:26px; padding:32px 34px;
+    display:flex; align-items:center; gap:26px; flex-wrap:wrap;
   }
-  .floating-kiss {
-    position: absolute;
-    font-size: 1.8rem;
-    animation: floatUp 1s ease-out forwards;
-    pointer-events: none;
+  .play-btn{
+    flex:0 0 auto; width:64px; height:64px; border-radius:50%;
+    background:linear-gradient(135deg, var(--rose-accent), var(--rose-accent-deep));
+    color:#fff; border:none; font-size:1.3rem; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 26px rgba(201,76,116,0.4);
   }
-  @keyframes floatUp {
-    0% { transform: translateY(0) scale(0.5); opacity: 1; }
-    100% { transform: translateY(-70px) scale(1.4); opacity: 0; }
+  .eq{ display:flex; align-items:flex-end; gap:3px; height:22px; margin-left:6px;}
+  .eq span{ width:3px; background:var(--rose-accent); border-radius:2px; animation: eq 1s ease-in-out infinite; }
+  .eq span:nth-child(1){height:60%; animation-delay:0s;}
+  .eq span:nth-child(2){height:100%; animation-delay:0.15s;}
+  .eq span:nth-child(3){height:40%; animation-delay:0.3s;}
+  .eq span:nth-child(4){height:80%; animation-delay:0.45s;}
+  @keyframes eq{ 0%,100%{transform:scaleY(0.4);} 50%{transform:scaleY(1);} }
+  .track-list{ flex:1; min-width:220px;}
+  .track-list h3{ font-size:1.1rem; margin-bottom:10px;}
+  
+  .track{ 
+    display:flex; 
+    justify-content:space-between; 
+    font-size:0.9rem; 
+    color:var(--ink-soft); 
+    padding:6px 0; 
+    border-bottom:1px dashed rgba(122,92,118,0.2);
+    text-decoration: none;
+    transition: color 0.3s ease;
   }
+  .track:hover { color: var(--rose-accent-deep); }
+  .track:last-child{border-bottom:none;}
 
-  /* ---------- FINAL PAGE (Page 8) ---------- */
-  .final-card {
-    padding: 36px; border-radius: 28px; max-width: 480px; width: 100%;
-    margin-top: 15px;
+  /* ---------- CLOSING ---------- */
+  .closing{
+    text-align:center; padding: 140px 8vw 160px;
   }
-  .bears-graphic {
-    font-size: 2.8rem; margin-bottom: 10px;
+  .closing-quote{
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    max-width:640px; margin:0 auto; color:var(--ink);
   }
+  .closing-heart{ margin-top:28px; font-size:1.6rem; color:var(--rose-accent); animation: pulse 1.8s ease-in-out infinite; display:inline-block;}
 
-  /* Navigation Footer for Multi-page flow */
-  .page-nav {
-    margin-top: 20px;
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-  }
-  .nav-btn {
-    padding: 10px 22px;
-    border-radius: 999px;
-    border: 1px solid var(--glass-border);
-    background: rgba(255,255,255,0.4);
-    color: var(--rose-accent-deep);
-    font-weight: 500;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  .nav-btn:hover { background: rgba(255,255,255,0.7); }
+  footer{ text-align:center; padding: 30px 20px 50px; font-size:0.75rem; color:var(--ink-soft); letter-spacing:0.06em;}
 
   @media (max-width:640px){
-    .page { padding: 30px 5vw; }
+    section{padding:80px 6vw;}
+    .playlist-card{ justify-content:center; text-align:center;}
   }
 </style>  
+
 </head>  
 <body>  
 
@@ -461,7 +389,9 @@
 
   <!-- LOADING SCREEN (CUPID) -->
   <div id="loading-screen">
-    <div class="cupid-container">💌</div>
+    <div class="cupid-container">
+      💌
+    </div>
     <div class="loading-text">Loading our memories...</div>
   </div>
 
@@ -474,155 +404,151 @@
   </svg>  
   
   <div class="ambient" id="ambient"></div>  
+  
+  <!-- HERO -->  
+  <section class="hero">  
+    <div class="eyebrow">Girlfriend's Day</div>  
+    <h1 class="hero-heading">Happy Girlfriend's Day <span class="heart-pulse">❤️</span></h1>  
+    <p class="hero-sub quote">Every day with you is my favourite story.</p>    
+    
+    <div class="heart-frame-wrap">  
+      <div class="heart-glow"></div>  
+      <div class="heart-frame"></div>  
+    </div>  
+    
+    <button class="cta-btn" onclick="document.getElementById('reasons').scrollIntoView({behavior:'smooth'})">Open My Surprise</button>
+  </section>  
 
-  <!-- MULTI-PAGE CONTAINER -->
-  <div class="page-container">
-
-    <!-- PAGE 1: HERO -->
-    <div class="page active" id="page-1">
-      <div class="page-inner">
-        <div class="eyebrow">Girlfriend's Day</div>  
-        <h1 class="hero-heading">Happy Girlfriend's Day <span class="heart-pulse">❤️</span></h1>  
-        <p class="hero-sub quote">Every day with you is my favourite story.</p>    
-        
-        <div class="heart-frame-wrap">  
-          <div class="heart-glow"></div>  
-          <div class="heart-frame"></div>  
+  <!-- REASONS -->  
+  <section id="reasons">  
+    <div class="section-inner">  
+      <div class="eyebrow">Reasons I Love You</div>  
+      <h2>A few of the many</h2>  
+      <div class="reasons-grid">  
+        <div class="reason-card glass">  
+          <span class="reason-mark">✦</span>  
+          <h3>Your laugh</h3>  
+          <p>It fills every room and somehow makes the ordinary feel like a good day.</p>  
         </div>  
-        
-        <button class="cta-btn" onclick="goToPage(2)">More Magic</button>
-      </div>
-    </div>
+        <div class="reason-card glass">  
+          <span class="reason-mark">✦</span>  
+          <h3>The little notes</h3>  
+          <p>You remember the small things I mention once, and that's never once felt small.</p>  
+        </div>  
+        <div class="reason-card glass">  
+          <span class="reason-mark">✦</span>  
+          <h3>How you show up</h3>  
+          <p>On the ordinary Tuesdays, not just the big days — that's when I love you most.</p>  
+        </div>  
+        <div class="reason-card glass">  
+          <span class="reason-mark">✦</span>  
+          <h3>Your quiet strength</h3>  
+          <p>You carry more than you let on, and still find room to take care of me too.</p>  
+        </div>  
+        <div class="reason-card glass">  
+          <span class="reason-mark">✦</span>  
+          <h3>The way home feels</h3>  
+          <p>It was just a place, until it became wherever you are.</p>  
+        </div>  
+        <div class="reason-card glass">  
+          <span class="reason-mark">✦</span>  
+          <h3>Us, exactly as we are</h3>  
+          <p>No performance, no pretending — just two people who chose each other, again and again.</p>  
+        </div>  
+      </div>  
+    </div>  
+  </section>  
 
-    <!-- PAGE 2: REASONS -->
-    <div class="page" id="page-2">
-      <div class="page-inner">
-        <div class="eyebrow">Reasons I Love You</div>  
-        <h2>A few reasons, out of a thousand</h2>  
-        <div class="reasons-stack">  
-          <div class="reason-row glass">  
-            <span class="reason-mark">♥</span>  
-            <div>
-              <h3>Your laugh</h3>  
-              <p>The way you laugh at your own jokes before you finish telling them</p>
-            </div>
-          </div>  
-          <div class="reason-row glass">  
-            <span class="reason-mark">♥</span>  
-            <div>
-              <h3>The little notes</h3>  
-              <p>How you remember the tiny things I forgot about myself</p>
-            </div>
-          </div>  
-          <div class="reason-row glass">  
-            <span class="reason-mark">♥</span>  
-            <div>
-              <h3>Your voice</h3>  
-              <p>Your terrible singing that I secretly love</p>
-            </div>
-          </div>  
-          <div class="reason-row glass">  
-            <span class="reason-mark">♥</span>  
-            <div>
-              <h3>The way home</h3>  
-              <p>How you make any place feel like home</p>
-            </div>
-          </div>  
-          <div class="reason-row glass">  
-            <span class="reason-mark">♥</span>  
-            <div>
-              <h3>Safe space</h3>  
-              <p>The way you listen to all my rants without judging me</p>
-            </div>
+  <!-- MEMORIES TIMELINE -->  
+  <section>  
+    <div class="section-inner">  
+      <div class="eyebrow">Our Memories</div>  
+      <h2>Chapters so far</h2>  
+      <div class="timeline">  
+        <div class="tl-item">  
+          <div class="tl-dot"></div>  
+          <div class="tl-date">The Beginning</div>  
+          <div class="tl-card glass">  
+            <h3>Where it started</h3>  
+            <p>A conversation that was supposed to be brief, and never really ended.</p>  
           </div>  
         </div>  
-        <div class="page-nav">
-          <button class="nav-btn" onclick="goToPage(1)">Back</button>
-          <button class="cta-btn" onclick="goToPage(3)">More Magic</button>
-        </div>
-      </div>
-    </div>
+        <div class="tl-item">  
+          <div class="tl-dot"></div>  
+          <div class="tl-date">First Trip Together</div>  
+          <div class="tl-card glass">  
+            <h3>Somewhere new, together</h3>  
+            <p>New streets, same us — that's when I knew this was easy in the best way.</p>  
+          </div>  
+        </div>  
+        <div class="tl-item">  
+          <div class="tl-dot"></div>  
+          <div class="tl-date">A Hard Season</div>  
+          <div class="tl-card glass">  
+            <h3>Choosing each other anyway</h3>  
+            <p>Nothing was perfect, but nothing made me want to leave either.</p>  
+          </div>  
+        </div>  
+        <div class="tl-item">  
+          <div class="tl-dot"></div>  
+          <div class="tl-date">Today</div>  
+          <div class="tl-card glass">  
+            <h3>Still here, still us</h3>  
+            <p>Ordinary days that somehow still feel like something worth writing down.</p>  
+          </div>  
+        </div>  
+      </div>  
+    </div>  
+  </section>  
 
-    <!-- PAGE 3: LOVE JAR -->
-    <div class="page" id="page-3">
-      <div class="page-inner">
-        <div class="eyebrow">Love Jar</div>  
-        <h2>Everything I Love About You</h2>  
-        <div class="jar-wrap" id="jarContainer"></div>
-        <div class="page-nav" style="margin-top:10px;">
-          <button class="nav-btn" onclick="goToPage(2)">Back</button>
-          <button class="cta-btn" onclick="goToPage(4)">Next Chapter</button>
-        </div>
-      </div>
-    </div>
+  <!-- GALLERY -->  
+  <section>  
+    <div class="section-inner">  
+      <div class="eyebrow">Favourite Moments</div>  
+      <h2>A little gallery of us</h2>  
+      <div class="gallery-grid">  
+        <div class="gallery-tile" style="background: linear-gradient(0deg, rgba(74,47,71,0.5), transparent 55%), url('65224.jpg') center/cover;">
+          <span>Us ✨</span>
+        </div>  
+        <div class="gallery-tile" style="background: linear-gradient(0deg, rgba(74,47,71,0.5), transparent 55%), url('65226.jpg') center/cover;">
+          <span>Your Birthday</span>
+        </div>  
+        <div class="gallery-tile" style="background: linear-gradient(0deg, rgba(74,47,71,0.5), transparent 55%), url('65229.jpg') center/cover;">
+          <span>Sunflowers 🌻</span>
+        </div>  
+        <div class="gallery-tile" style="background: linear-gradient(0deg, rgba(74,47,71,0.5), transparent 55%), url('65223.jpg') center/cover;">
+          <span>Good Times</span>
+        </div>  
+      </div>  
+    </div>  
+  </section>  
 
-    <!-- PAGE 4: MUSIC -->
-    <div class="page" id="page-4">
-      <div class="page-inner">
-        <div class="eyebrow">Our Song</div>  
-        <h2>Until I Found You</h2>  
-        <div class="music-card-center glass">
-          <div class="vinyl-cover" id="vinylCover"></div>
-          <p class="quote" style="font-size:1.1rem; color:var(--ink-soft);">"A song that reminds me of you."</p>
-          <button class="cta-btn" id="musicToggleBtn" style="padding: 10px 24px; font-size:0.9rem;">Play Song</button>
-        </div>
-        <div class="page-nav">
-          <button class="nav-btn" onclick="goToPage(3)">Back</button>
-          <button class="cta-btn" onclick="goToPage(5)">Keep Going</button>
-        </div>
-      </div>
-    </div>
+  <!-- LOVE COUNTER -->  
+  <section>  
+    <div class="section-inner">  
+      <div class="eyebrow">Love Counter</div>  
+      <h2>Since the day it started</h2>  
+      <div class="counter-panel glass">  
+        <div class="counter-unit"><div class="counter-num" id="c-days">0</div><div class="counter-label">Days</div></div>  
+        <div class="counter-unit"><div class="counter-num" id="c-hours">0</div><div class="counter-label">Hours</div></div>  
+        <div class="counter-unit"><div class="counter-num" id="c-mins">0</div><div class="counter-label">Minutes</div></div>  
+        <div class="counter-unit"><div class="counter-num" id="c-secs">0</div><div class="counter-label">Seconds</div></div>  
+      </div>  
+    </div>  
+  </section>  
 
-    <!-- PAGE 5: LETTER -->
-    <div class="page" id="page-5">
-      <div class="page-inner">
-        <div class="eyebrow">A Letter from My Heart</div>  
-        <h2>To My Amazing Girl</h2>  
-        <div class="letter-card glass">
-          <p>To my amazing girl, Thank you for being my rock, my safe place, and my greatest adventure. You make every ordinary day feel like magic. Here's to us and all the beautiful memories.</p>
-        </div>
-        <div class="page-nav">
-          <button class="nav-btn" onclick="goToPage(4)">Back</button>
-          <button class="cta-btn" onclick="goToPage(6)">Our Memories</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 6: GALLERY (POLAROID) -->
-    <div class="page" id="page-6">
-      <div class="page-inner">
-        <div class="eyebrow">Our Memories</div>  
-        <h2>Our Beautiful Memories</h2>  
-        <div class="polaroid-frame">
-          <div class="polaroid-img" style="background-image: url('65223.jpg');"></div>
-          <div class="polaroid-caption">Us ✨</div>
-        </div>
-        <div class="page-nav" style="margin-top:10px;">
-          <button class="nav-btn" onclick="goToPage(5)">Back</button>
-          <button class="cta-btn" onclick="goToPage(7)">Finish</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 7: KISS INTERACTION -->
-    <div class="page" id="page-7">
-      <div class="page-inner">
-        <div class="eyebrow">Send a Kiss</div>  
-        <h2>Tap anywhere to send a kiss 💋</h2>  
-        <div class="kiss-target-area glass" id="kissArea">
-          <span style="color:var(--rose-accent-deep); font-weight:500; font-size:0.95rem;">Tap Here!</span>
-        </div>
-        <div class="page-nav">
-          <button class="nav-btn" onclick="goToPage(6)">Back</button>
-          <button class="cta-btn" onclick="goToPage(8)">Final Note</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 8: CLOSING -->
-    <div class="page" id="page-8">
-      <div class="page-inner">
-        <div class="final-card glass">
-          <div class="bears-graphic">🧸❤️🐻</div>
-          <h2 style="margin-bottom:12px;">Here's to us — today, tomorrow, and always.</h2>
-          <p clas
+  <!-- PLAYLIST -->  
+  <section>  
+    <div class="section-inner">  
+      <div class="eyebrow">Playlist for Us</div>  
+      <h2>Songs that sound like you</h2>  
+      <div class="playlist-card glass">  
+        <button class="play-btn" aria-label="Play preview">▶</button>  
+        <div class="eq"><span></span><span></span><span></span><span></span></div>  
+        <div class="track-list">  
+          <h3>Our Story, Vol. 1</h3>  
+          <a href="https://open.spotify.com/track/4E5vIqszteCqguTt5CQnJf?si=Bb334NGuQ7yS4spYwSi1_g&utm_source=copy-link" target="_blank" class="track">
+            <span>1. Maskara</span>
+            <span>3:54</span>
+          </a>  
+          <a href="https://open.spotify.com/track/38uWiiaOVsaZNarFJONJhf?si=Oar8OFW2TeWQyzDM--qeIg&utm_source=copy-link
