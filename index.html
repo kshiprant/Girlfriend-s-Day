@@ -511,13 +511,13 @@
           <span>Us ✨</span>
         </div>  
         <div class="gallery-tile" style="background: linear-gradient(0deg, rgba(74,47,71,0.5), transparent 55%), url('65226.jpg') center/cover;">
-          <span>Your Birthday</span>
+          <span>Zona Tello Date</span>
         </div>  
         <div class="gallery-tile" style="background: linear-gradient(0deg, rgba(74,47,71,0.5), transparent 55%), url('65229.jpg') center/cover;">
           <span>Sunflowers 🌻</span>
         </div>  
         <div class="gallery-tile" style="background: linear-gradient(0deg, rgba(74,47,71,0.5), transparent 55%), url('65223.jpg') center/cover;">
-          <span>Good Times</span>
+          <span>Goofy Times</span>
         </div>  
       </div>  
     </div>  
@@ -551,4 +551,125 @@
             <span>1. Maskara</span>
             <span>3:54</span>
           </a>  
-          <a href="https://open.spotify.com/track/38uWiiaOVsaZNarFJONJhf?si=Oar8OFW2TeWQyzDM--qeIg&utm_source=copy-link
+          <a 
+<a href="https://open.spotify.com/track/38uWiiaOVsaZNarFJONJhf?si=Oar8OFW2TeWQyzDM--qeIg&utm_source=copy-link" target="_blank" class="track">
+            <span>2. Sheher Mein</span>
+            <span>4:02</span>
+          </a>  
+          <a href="https://open.spotify.com/track/3hcwpXiJtR7kwDrWllcH0v?si=F3FrRA-_Rzy2mV_chC7XCw&utm_source=copy-link" target="_blank" class="track">
+            <span>3. Madhubala</span>
+            <span>4:03</span>
+          </a>  
+          <a href="https://open.spotify.com/track/3APdIdF8H0jsxSuGOqXedS?si=02EqXOlLQFWkybXDPgtbHA&utm_source=copy-link" target="_blank" class="track">
+            <span>4. Kabhi Kabhi Aditi</span>
+            <span>3:39</span>
+          </a>  
+        </div>  
+      </div>  
+    </div>  
+  </section>  
+
+  <!-- CLOSING -->  
+  <section class="closing">  
+    <p class="closing-quote quote">Thank you for being my home. Happy Girlfriend's Day.</p>  
+    <div class="closing-heart">❤</div>  
+  </section>  
+  
+  <footer>Made with love, for you.</footer>  
+  
+  <script>  
+    // ---------- PIN & LOADING SCREEN LOGIC ----------
+    const pinInput = document.getElementById('pin-input');
+    const unlockBtn = document.getElementById('unlock-btn');
+    
+    // Changed type to text with numeric keypad to fix Android/iOS reading issues
+    unlockBtn.addEventListener('click', verifyPin);
+    
+    pinInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        verifyPin();
+      }
+    });
+
+    function verifyPin() {
+      // Force string conversion, clean spaces, and remove invisible character codes
+      const enteredPin = String(pinInput.value).replace(/[\s\uFEFF\xA0]+/g, '');
+      const errorText = document.getElementById('pin-error');
+      
+      // Strict check against "1904"
+      if (enteredPin === "1904") {
+        errorText.style.opacity = '0';
+        document.getElementById('pin-screen').style.opacity = '0';
+        
+        setTimeout(() => {
+          document.getElementById('pin-screen').style.display = 'none';
+          
+          const loader = document.getElementById('loading-screen');
+          loader.style.pointerEvents = 'auto';
+          loader.style.opacity = '1';
+          
+          setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+              loader.style.display = 'none';
+              document.body.style.overflowY = 'auto'; 
+            }, 600);
+          }, 4000);
+          
+        }, 600);
+
+      } else {
+        pinInput.classList.remove('error-shake');
+        void pinInput.offsetWidth;
+        pinInput.classList.add('error-shake');
+        errorText.style.opacity = '1';
+        pinInput.value = '';
+      }
+    }
+
+    // ---------- AMBIENT EFFECTS ----------
+    const ambient = document.getElementById('ambient');  
+    for(let i=0;i<16;i++){  
+      const p = document.createElement('div');  
+      p.className='petal';  
+      p.style.left = Math.random()*100+'vw';  
+      p.style.setProperty('--drift', (Math.random()*80-40)+'px');  
+      p.style.animationDuration = (10+Math.random()*10)+'s';  
+      p.style.animationDelay = (Math.random()*10)+'s';  
+      p.style.transform = `scale(${0.6+Math.random()*0.8})`;  
+      ambient.appendChild(p);  
+    }  
+    for(let i=0;i<28;i++){  
+      const s = document.createElement('div');  
+      s.className='star';  
+      s.style.left = Math.random()*100+'vw';  
+      s.style.top = Math.random()*100+'vh';  
+      s.style.animationDuration = (2+Math.random()*3)+'s';  
+      s.style.animationDelay = (Math.random()*4)+'s';  
+      ambient.appendChild(s);  
+    }  
+    
+    // ---------- LOVE COUNTER ----------
+    const startDate = new Date("2025-07-19T00:00:00");  
+    
+    function updateCounter(){  
+      const now = new Date();  
+      let diff = Math.max(0, now - startDate) / 1000;  
+      
+      if (diff < 0) diff = 0;
+
+      const days = Math.floor(diff/86400); diff -= days*86400;  
+      const hours = Math.floor(diff/3600); diff -= hours*3600;  
+      const mins = Math.floor(diff/60); diff -= mins*60;  
+      const secs = Math.floor(diff);  
+      
+      document.getElementById('c-days').textContent = days;  
+      document.getElementById('c-hours').textContent = String(hours).padStart(2,'0');  
+      document.getElementById('c-mins').textContent = String(mins).padStart(2,'0');  
+      document.getElementById('c-secs').textContent = String(secs).padStart(2,'0');  
+    }  
+    updateCounter();  
+    setInterval(updateCounter, 1000);  
+  </script>  
+</body>  
+</html>
